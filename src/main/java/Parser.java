@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
-    @Option(name = "word", usage = "Word")
-    private String word; // поиск слова
 
     @Option(name = "-r", usage = "Regex")
     private String rgx; // регексы
@@ -17,31 +15,40 @@ public class Parser {
     @Option(name = "-i", usage = "Ignore")
     private String ign; // игнорирование
 
-    @Argument
-    private List<String> arguments = new ArrayList<String>();
+    //@Option(name = "word", usage = "Word")
+    //private String word; // поиск слова
 
-    public void format() {
-        System.out.println("Option " + word + rgx + invert + ign);
-    }
+    @Argument
+    private static final List<String> arguments = new ArrayList<String>();
 
     public void parseArguments(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
+            if (arguments.isEmpty() || (rgx.isEmpty() && invert.isEmpty() && ign.isEmpty()) || (!arguments.get(0).equals("grep") || arguments.size() != 3)) {
+                System.out.println("ERROR of enter");
+            }
+
         } catch (Exception CmdLineException) {
             System.err.println(CmdLineException.getMessage());
             parser.printUsage(System.err);
             throw new IllegalArgumentException("");
         }
+        //передаём слово из входного файла
+        final String word = arguments.get(1);
         //передаём имя входного файла
-        String input = arguments.get(1);
+        final String input = arguments.get(2);
         //передаём нашей основной функции парсированные агрументы
-        //PackRLEKt.packRLE(pack, input, out);
+        Grep.grep(ign, invert, rgx, word, input);
 
     }
-    public static void main(String[] args){
+
+    String[] args = {"grep -r word exam.txt"};
+
+    public static void main(String[] args) {
         new Parser().parseArguments(args);
-
+        //System.out.println(arguments);
 
     }
+
 }
