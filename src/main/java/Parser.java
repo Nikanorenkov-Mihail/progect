@@ -1,3 +1,4 @@
+
 import org.kohsuke.args4j.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ public class Parser {
     private String word; // поиск слова
 
     @Option(name = "-r", usage = "Regex")
-    private String rgx; // регекс
+    private String rgx; // регексы
 
     @Option(name = "-v", usage = "Invert")
     private String invert; // игнорирование
@@ -40,5 +41,7 @@ public class Parser {
     }
     public static void main(String[] args){
         new Parser().parseArguments(args);
+
+
     }
 }
