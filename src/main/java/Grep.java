@@ -28,41 +28,49 @@ public class Grep {
 
     }
 
-    public static void regex(String @NotNull [] inputFileInList, String rgx) {
+    public static @NotNull String regex(String @NotNull [] inputFileInList, String rgx) {
+        StringBuilder result = new StringBuilder();
         Pattern pattern = Pattern.compile(rgx);
         int counter = 0;
         for (String line : inputFileInList) {
             Matcher matcher = pattern.matcher(line);
             if (matcher.find()) {
+                result.append(line).append("\n");
                 System.out.println(line);
                 counter++;
             }
         }
         System.out.println("Найдено совпадений: " + counter);
+        return result.toString();
     }
 
-    public static void invert(String @NotNull [] inputFileInList, String word) {
+    public static @NotNull String invert(String @NotNull [] inputFileInList, String word) {
+        StringBuilder result = new StringBuilder();
         Pattern pattern = Pattern.compile(word);
         for (String line : inputFileInList) {
             Matcher matcher = pattern.matcher(line);
             if (!matcher.find()) {
+                result.append(line).append("\n");
                 System.out.println(line);
             }
         }
-
+        return result.toString();
     }
 
-    public static void ignore(String @NotNull [] inputFileInList, @NotNull String word) {
+    public static @NotNull String ignore(String @NotNull [] inputFileInList, @NotNull String word) {
+        StringBuilder result = new StringBuilder();
         Pattern pattern = Pattern.compile(word.toLowerCase(Locale.ROOT));
         int counter = 0;
         for (String line : inputFileInList) {
             Matcher matcher = pattern.matcher(line.toLowerCase(Locale.ROOT));
             if (matcher.find()) {
+                result.append(line).append("\n");
                 System.out.println(line);
                 counter++;
             }
         }
         System.out.println("Найдено совпадений: " + counter);
+        return result.toString();
     }
 }
 
