@@ -19,7 +19,7 @@ public class Parser {
     //private String word; // поиск слова
 
     @Argument
-    private static final List<String> arguments = new ArrayList<String>();
+    private static List<String> arguments = new ArrayList<String>();
 
     public void parseArguments(String[] args) {
         CmdLineParser parser = new CmdLineParser(this);
