@@ -1,6 +1,5 @@
-
 import org.kohsuke.args4j.*;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,22 +9,21 @@ public class Parser {
     private String rgx; // регексы
 
     @Option(name = "-v", usage = "Invert")
-    private String invert; // игнорирование
+    private String invert; // инвертирование
 
     @Option(name = "-i", usage = "Ignore")
-    private String ign; // игнорирование
+    private String ign; // игнорирование регистра
 
-    //@Option(name = "word", usage = "Word")
-    //private String word; // поиск слова
+    private String word; // поиск слова
 
     @Argument
-    private static List<String> arguments = new ArrayList<String>();
+    private List<String> arguments = new ArrayList<String>(10); //File
 
-    public void parseArguments(String[] args) {
+    public void parseArguments(String[] args) throws IOException {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
-            if (arguments.isEmpty() || (rgx.isEmpty() && invert.isEmpty() && ign.isEmpty()) || (!arguments.get(0).equals("grep") || arguments.size() != 3)) {
+            if (arguments.isEmpty()) {
                 System.out.println("ERROR of enter");
             }
 
@@ -34,21 +32,20 @@ public class Parser {
             parser.printUsage(System.err);
             throw new IllegalArgumentException("");
         }
-        //передаём слово из входного файла
-        final String word = arguments.get(1);
-        //передаём имя входного файла
-        final String input = arguments.get(2);
-        //передаём нашей основной функции парсированные агрументы
-        Grep.grep(ign, invert, rgx, word, input);
 
+        //передаём имя входного файла
+        String File = arguments.get(0);
+
+        if (rgx == null & invert == null & ign == null & word == null) { // если нет флага, ищем по слову
+            word = arguments.get(0); //без флагов первым аргументом будет слово для поиска
+            File = arguments.get(1); //без флагов вторым аргументом будет имя файла
+        }
+        //передаём нашей основной функции парсированные агрументы
+        Grep.grep(ign, invert, rgx, word, File);
     }
 
-    String[] args = {"grep -r word exam.txt"};
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Parser().parseArguments(args);
-        //System.out.println(arguments);
-
     }
 
 }

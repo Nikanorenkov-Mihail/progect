@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="grepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-02T00:05:44" hostname="MIHAIL-NIKANORE" time="0.13">
+  <properties/>
+  <testcase name="test()" classname="grepTest" time="0.13"/>
+  <system-out><![CDATA[________________________________________
+Hello regex
+Matches found: 1
+----------------------------------------
+words tO chEck
+
+________________________________________
+Hello invert
+No matches found: 2
+----------------------------------------
+words tO chEck
+LateR.
+
+________________________________________
+Hello invert
+No matches found: 3
+----------------------------------------
+words tO chEck
+need, necEssarily, to Invent.
+LateR.
+
+________________________________________
+Hello ignore
+Matches found: 1
+----------------------------------------
+LateR.
+
+________________________________________
+Hello regex
+Matches found: 1
+----------------------------------------
+need, necEssarily, to Invent.
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
