@@ -1,3 +1,4 @@
+/*
 import org.kohsuke.args4j.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,12 +37,12 @@ public class Parser {
         //передаём имя входного файла
         String File = arguments.get(0);
 
-        if (rgx == null & invert == null & ign == null & word == null) { // если нет флага, ищем по слову
+        if (rgx == null && invert == null && ign == null && word == null) { // если нет флага, ищем по слову
             word = arguments.get(0); //без флагов первым аргументом будет слово для поиска
             File = arguments.get(1); //без флагов вторым аргументом будет имя файла
         }
         //передаём нашей основной функции парсированные агрументы
-        Grep.grep(ign, invert, rgx, word, File);
+        //Grep.grep(ign, invert, rgx, word, File);
     }
 
     public static void main(String[] args) throws IOException {
@@ -49,3 +50,4 @@ public class Parser {
     }
 
 }
+*/
