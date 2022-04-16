@@ -1,27 +1,22 @@
-Hello regex
 Matches found: 1
 *----------------------------------------
 words tO chEck
 
-Hello invert
-No matches found: 2
+Matches found: 2
 *----------------------------------------
 words tO chEck
 LateR.
 
-Hello invert
-No matches found: 3
+Matches found: 3
 *----------------------------------------
 words tO chEck
 need, necEssarily, to Invent.
 LateR.
 
-Hello ignore
 Matches found: 1
 *----------------------------------------
 LateR.
 
-Hello regex
 Matches found: 1
 *----------------------------------------
 need, necEssarily, to Invent.

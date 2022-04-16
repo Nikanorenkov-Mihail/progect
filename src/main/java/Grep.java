@@ -12,18 +12,16 @@ import java.util.regex.Pattern;
 
 public class Grep {
     @Option(name = "-r", usage = "Regex")
-    private String rgx; // регексы
+    private Boolean rgx = false; // регексы, нигде не используем :(
 
     @Option(name = "-v", usage = "Invert")
-    private String invert; // инвертирование
+    private Boolean invert = false; // инвертирование
 
     @Option(name = "-i", usage = "Ignore")
-    private String ign; // игнорирование регистра
-
-    private String word; // поиск слова
+    private Boolean ign = false; // игнорирование регистра
 
     @Argument
-    private List<String> arguments = new ArrayList<String>(10); //File
+    private List<String> arguments = new ArrayList<String>(2); //File
 
     public void parseArguments(String[] args) throws IOException {
         CmdLineParser parser = new CmdLineParser(this);
@@ -39,133 +37,54 @@ public class Grep {
             throw new IllegalArgumentException("");
         }
 
-        //передаём имя входного файла
-        String File = arguments.get(0);
-        if (rgx == null && invert == null && ign == null && word == null) { // если нет флага, ищем по слову
-            word = arguments.get(0); //без флагов первым аргументом будет слово для поиска
-            File = arguments.get(1); //без флагов вторым аргументом будет имя файла
-        }
-        grep(ign, invert, rgx, word, File);
+        String word = arguments.get(0);
+        String file = arguments.get(1);
+
+        grep(word, ign, invert, file);
     }
 
-    public String grep(String ign, String invert, String rgx, String word, String File) throws IOException {
+    public void grep(String word, Boolean ign, Boolean invert, String file) throws IOException {
+        grepWord(word, ign, invert, file);
+    }
 
-        if (ign != null) {
-            //Grep.ignore(File, ign);
-            System.out.println("Hello ignore");
+    public void grepWord(String word, @NotNull Boolean ign, Boolean invert, String file) throws IOException {
+        StringBuilder result = new StringBuilder();
 
-            StringBuilder result = new StringBuilder();
+        Pattern pattern = Pattern.compile(word); // задаем выражение для поиска
+        if (ign) pattern = Pattern.compile(word.toLowerCase(Locale.ROOT)); // игнорим регистр, если был флаг
 
-            Pattern pattern = Pattern.compile(ign.toLowerCase(Locale.ROOT)); // игнорим регистр
-            int counter = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(File))) {
-                String str = reader.readLine();
-                while (str != null) {
+        int counter = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String str = reader.readLine();
+            while (str != null) {
 
-                    Matcher matcher = pattern.matcher(str.toLowerCase(Locale.ROOT)); // все еще игнорим, но запишем первоначальный вид
-                    if (matcher.find()) {
-                        result.append(str).append("\n");
-                        counter++;
-                    }
-                    str = reader.readLine();
-                }
-            }
+                Matcher matcher = pattern.matcher(str);
+                if (ign) // флаг на игнорирование
+                    matcher = pattern.matcher(str.toLowerCase(Locale.ROOT)); // все еще игнорим с флагом
 
-            System.out.println("Matches found: " + counter);
-            System.out.println("----------------------------------------");
-            System.out.println(result);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/newTestIGNORE.txt"))) {
-                writer.write(String.valueOf(result));
-            }
-            return result.toString();
-        } else if (invert != null) {
-            //Grep.invert(File, invert);
-            System.out.println("Hello invert");
-            StringBuilder result = new StringBuilder();
-
-            Pattern pattern = Pattern.compile(invert);
-            int counter = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(File))) {
-                String str = reader.readLine();
-                while (str != null) {
-
-                    Matcher matcher = pattern.matcher(str);
+                if (invert) { // флаг на инвертирование
                     if (!matcher.find()) { // запишем все, что не нашли
                         result.append(str).append("\n");
                         counter++;
                     }
-                    str = reader.readLine();
+                } else if (matcher.find()) { // запишем все, что нашли
+                    result.append(str).append("\n");
+                    counter++;
                 }
+                str = reader.readLine();
+
             }
-            System.out.println("No matches found: " + counter);
-            System.out.println("----------------------------------------");
-            System.out.println(result);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/newTestINVERT.txt"))) {
-                writer.write(String.valueOf(result));
-            }
-            return result.toString();
-        } else if (rgx != null) {
-            //Grep.regex(File, rgx);
-            System.out.println("Hello regex");
-
-            StringBuilder result = new StringBuilder();
-
-            Pattern pattern = Pattern.compile(rgx);
-            int counter = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(File))) { // читаем файл, сразу выполняем поиск
-                String str = reader.readLine();
-                while (str != null) {
-
-                    Matcher matcher = pattern.matcher(str);
-                    if (matcher.find()) {
-                        result.append(str).append("\n");
-                        counter++;
-                    }
-                    str = reader.readLine();
-                }
-            }
-
-            System.out.println("Matches found: " + counter);
-            System.out.println("----------------------------------------");
-            System.out.println(result);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/newTestREGEX.txt"))) {
-                writer.write(String.valueOf(result)); // по заданию выводим результат на консоль, но тесты интереснее делать с файлами
-            }
-            return result.toString();
-        } else { //нет флагов, ищем по слову
-            //Grep.regex(File, word); //а нужно ли делать отдельно поиск по слову, когда есть поиск по выражению...
-            System.out.println("Hello regex");
-
-            StringBuilder result = new StringBuilder();
-
-            Pattern pattern = Pattern.compile(word);
-            int counter = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(File))) { // читаем файл, сразу выполняем поиск
-                String str = reader.readLine();
-                while (str != null) {
-
-                    Matcher matcher = pattern.matcher(str);
-                    if (matcher.find()) {
-                        result.append(str).append("\n");
-                        counter++;
-                    }
-                    str = reader.readLine();
-                }
-            }
-
-            System.out.println("Matches found: " + counter);
-            System.out.println("----------------------------------------");
-            System.out.println(result);
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/newTestREGEX.txt"))) {
-                writer.write(String.valueOf(result)); // по заданию выводим результат на консоль, но тесты интереснее делать с файлами
-            }
-            return result.toString();
         }
 
+        System.out.println("Matches found: " + counter);
+        System.out.println("----------------------------------------");
+        System.out.println(result);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output/newTestGrep.txt"))) {
+            writer.write(String.valueOf(result));
+        }
     }
 
     public static void main(String[] args) throws IOException {
         new Grep().parseArguments(args);
     }
 }
-

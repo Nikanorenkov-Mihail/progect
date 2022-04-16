@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="grepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-06T13:57:14" hostname="MIHAIL-NIKANORE" time="0.204">
+<testsuite name="grepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-16T09:51:56" hostname="MIHAIL-NIKANORE" time="0.254">
   <properties/>
-  <testcase name="test()" classname="grepTest" time="0.204"/>
-  <system-out><![CDATA[Hello regex
-Matches found: 1
+  <testcase name="test()" classname="grepTest" time="0.254"/>
+  <system-out><![CDATA[Matches found: 1
 ----------------------------------------
 words tO chEck
 
-Hello invert
-No matches found: 2
+Matches found: 2
 ----------------------------------------
 words tO chEck
 LateR.
 
-Hello invert
-No matches found: 3
+Matches found: 3
 ----------------------------------------
 words tO chEck
 need, necEssarily, to Invent.
 LateR.
 
-Hello ignore
 Matches found: 1
 ----------------------------------------
 LateR.
 
-Hello regex
 Matches found: 1
 ----------------------------------------
 need, necEssarily, to Invent.

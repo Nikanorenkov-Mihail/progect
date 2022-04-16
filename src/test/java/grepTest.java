@@ -34,23 +34,23 @@ public class grepTest {
     @Test
     void test() throws IOException {
         Grep.main("words input/input.txt".trim().split(" "));
-        equalsFiles("output/newTestREGEX.txt", "input/test1 (word).txt");
-        new File("output/newTestREGEX.txt").delete(); // идея говорит, что игнорит delete, но работает
+        equalsFiles("output/newTestGrep.txt", "input/test1 (word).txt");
+        new File("output/newTestGrep.txt").delete(); // идея говорит, что игнорит delete, но работает
 
         Grep.main("-v necEssarily input/input.txt".trim().split(" "));
-        equalsFiles("output/newTestINVERT.txt", "input/test2 (invert).txt");
-        new File("output/newTestINVERT.txt").delete(); // работает, но все равно выделяет как замечание...
+        equalsFiles("output/newTestGrep.txt", "input/test2 (invert).txt");
+        new File("output/newTestGrep.txt").delete(); // работает, но все равно выделяет как замечание...
 
         Grep.main("-v something, input/input.txt".trim().split(" "));
-        equalsFiles("output/newTestINVERT.txt", "input/test3 (non invert).txt");
-        new File("output/newTestINVERT.txt").delete();
+        equalsFiles("output/newTestGrep.txt", "input/test3 (non invert).txt");
+        new File("output/newTestGrep.txt").delete();
 
         Grep.main("-i later input/input.txt".trim().split(" "));
-        equalsFiles("output/newTestIGNORE.txt", "input/test4 (ignore).txt");
+        equalsFiles("output/newTestGrep.txt", "input/test4 (ignore).txt");
         new File("output/newTestIGNORE.txt").delete();
 
         Grep.main("-r need, input/input.txt".trim().split(" "));
-        equalsFiles("output/newTestREGEX.txt", "input/test5 (regex).txt");
-        new File("output/newTestREGEX.txt").delete(); // не очень приятно, когда она все выделяет
+        equalsFiles("output/newTestGrep.txt", "input/test5 (regex).txt");
+        new File("output/newTestGrep.txt").delete(); // не очень приятно, когда она все выделяет
     }
 }
